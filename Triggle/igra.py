@@ -8,11 +8,19 @@ class Igra:
         self.na_potezu = 'X'  # prvi igrač
 
     def napraviTablu(self, n):
-        tabla = {} #dictionary
-        for q in range(-n + 1, n): #koordinate stubića u heksagonalnom koordinatnom sistemu (koristi se za šestougaone table)
-            for r in range(max(-n + 1, -q - n + 1), min(n, -q + n)): #opseg šestougaone table po jednoj osi.
+        tabla = {}  # Rečnik za šestougaonu tablu
+
+        for q in range(1, n + 2):  # (gornji deo šestougla)
+            for r in range(1, n + q + 1):
                 tabla[(q, r)] = {'gumice': [], 'trouglici': []}
+                
+        for q in range(n + 2, 2 * n + 2):  #  (donji deo šestougla)
+            for r in range(1, 3*n - q + 3):  
+                tabla[(q, r)] = {'gumice': [], 'trouglici': []}
+                
+
         return tabla
+
 
     def prikaziStanje(self):
         print("Trenutno stanje igre:")
@@ -89,14 +97,14 @@ class Igra:
         return True
 
 
-igra = Igra(4)
-print(igra.tabla[(0, 0)])
-igra.tabla[(0, 0)]['gumice'].append('gumica1')
-igra.tabla[(0, 0)]['trouglici'].append('trougao1')
-print(igra.tabla[(0, 0)])
+# igra = Igra(4)
+# print(igra.tabla[(1, 1)])
+# igra.tabla[(1, 1)]['gumice'].append('gumica1')
+# igra.tabla[(1, 1)]['trouglici'].append('trougao1')
+# print(igra.tabla[(1, 1)])
 
 
-igra = Igra(4)
+igra = Igra(3)
 igra.postaviPocetnoStanje()
 
 igra.rezultat['X'] = 29  # više od polovine (28 je polovina za n=4)
@@ -104,7 +112,23 @@ igra.rezultat['O'] = 5
 kraj, pobednik = igra.proveriKrajIgre()
 print(f"Kraj igre: {kraj}, Pobednik: {pobednik}")
 
-print(igra.proveriPotez(((0, 0), 'D')))   # True
-print(igra.proveriPotez(((10, 10), 'D'))) #  False (pozicija van table)
-print(igra.proveriPotez(((0, 0), 'X')))   #  False (nevalidan smer)
+print(igra.proveriPotez(((3, 6), 'D')))   # True
+print(igra.proveriPotez(((2, 2), 'D'))) #  true
+print(igra.proveriPotez(((8, 5), 'X')))   # false
 print(igra.proveriPotez((0, 'D')))        #  False (neispravan format poteza)
+
+
+
+# - Pogledaj na prezentaciji kako su prikazali sestougao. Na osnovu toga sam napravio for petlju u napraviTablu fju, osim sto nisam koristio slova za redove
+# - Ne svidja mi se sto trenutno za svaku koordinatu imamo gumice[] i trouglice[]. Nema smisla jer prvo te koordinate su stubici i nije nesto mnogo korisno 
+# da za svaki stubic cuvamo neke gumice ili trouglice koji nisu ni deo stubica.
+# - Moj predlog je da gumice cuvamo tako sto za svaku gumicu pamtimu izmedju kojih koordinata se nalazi. npr gumice[ [(1,1),(1,4)], [(4,1), (4,4)] ]
+# taman tako mozemo da napravimo da D,DL,DD automatski generisu tu drugu koordinatu. 
+# - npr postaviGumicu(1,1,'D') bi u listu gumice stavilo odma gumicu [(1,1),(1,4)] preko neke simple formule
+# - za trouglove nisam nesto detaljno gledao jos kako bismo mogli ali I guess da svaki trougao moze da ima 3 tacke tj 3 koordinate 
+# i onda po nekoj formuli na kraju svakog poteza ako se pozicije svih trenutnih gumica poklope tako da formiraju trougao ili trouglove, taj igrac koji je igrao dobija poen/poene
+# - trouglove mozemo da cuvamo kao niz i onda tek nakon sto se utvrdi da je trougao 'formiran', stavljamo u niz trouglovi[] koordinate tog trougla
+#  da ne bi opet mogao da se zauzme u nekom drugom potezu. to nam je dobro kasnije za stampanje interfejsa
+
+# - u principu mi cemo svakako da pratimo poene live ono posle svakog poteza tkd ne moramo nesto da brojimo kasnije te trouglove iz niza trouglovi[] 
+# nego cisto zbog stampe ce nam sluzi i da se spreci da se ne zauzmu vec zauzeti, simple
