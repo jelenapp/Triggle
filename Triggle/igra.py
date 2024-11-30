@@ -54,14 +54,8 @@ class Igra:
             return True, 'X'  # Pobedio je X
         elif self.rezultat['O'] > ukupno_trouglica / 2:
             return True, 'O'  # Pobedio je O
-
-        if len(self.trouglici) == ukupno_trouglica:
-            if self.rezultat['X'] > self.rezultat['O']:
-                return True, 'X'  # Pobedio je X
-            elif self.rezultat['O'] > self.rezultat['X']:
-                return True, 'O'  # Pobedio je O
-            else:
-                return True, 'Nerešeno'
+        elif (self.rezultat['X'] + self.rezultat['O']) == ukupno_trouglica: #nereseno je 
+            return True, 'Nerešeno'
 
         # igra nije završena
         return False, None
@@ -135,6 +129,19 @@ igra.rezultat['O'] = 5
 kraj, pobednik = igra.proveriKrajIgre()
 print(f"Kraj igre: {kraj}, Pobednik: {pobednik}")
 
+igra.rezultat['X'] = 40
+igra.rezultat['O'] = 40
+kraj, pobednik = igra.proveriKrajIgre()
+print(f"Kraj igre: {kraj}, Pobednik: {pobednik}") #false zato sto je 40:40, jos se igra
+
+igra.rezultat['X'] = 48
+igra.rezultat['O'] = 48
+kraj, pobednik = igra.proveriKrajIgre()
+print(f"Kraj igre: {kraj}, Pobednik: {pobednik}")  #true zato sto je dostignut krajnji rezultat
+# u praksi jedino kada je rezultat['X'] + rezultat['O'] = broj trouglica je kad je rezultat neresen (48:48 -> 48+48=96 - kraj)
+# u svakom drugom slucaju gde rezultat prelazi 48 i biva recimo 49:47, 49:35, 49:10...igra se zavrsava jer je pobednik vec poznat
+# simple: neko od igraca presao polovinu trouglica? kraj igre. nijedan nije presao polovinu trouglica? nije kraj igre. 
+# oba nisu presli polovinu trouglica a zbir poena je max broj trouglica? kraj igre - nereseno
 
 print("===============Provere poteza=====================")
 
@@ -158,9 +165,10 @@ print(igra.proveriPotez((0, 'D')))        #  False (neispravan format poteza)
 # - Dalje imamo da su trouglici postali dictionary da bismo mogli da pratimo trouglice posebno za X i O jer kad stampas u konzoli jebiga 
 # ne stampas trouglice nego stampas 'X' i 'O' za svakog igraca posebno, tkd mora tako
 # - Ostale stvari, malo sam nesto doradio, skapirao sam formulu kako da se odredi broj trouglica na osnovu velicine stranice sestougla, imas sve gore
-
+# - Obrati paznju na ono kako detektujemo ko je pobednik, kad igra jos nije gotova, kad je nereseno itd, imas komentar gore u mainu simple je
 
 # E sad osim tog interfejsa koji treba da iscrtam nekako, nema toliko nista spec vise da se radi
 # Oni su stavljali u ovim zahtevima za fazu 1 kao izbor ko prvi igra, unos poteza ali bez odigravanja poteza itd, tkd ja kapiram da ne treba 
 #da postoji nikakva ono live interakcija u konzoli jos gde korisnik bira ko igra prvi itd nego sve to ide preko funkcija za sad, testiranje samo
 # Ako mislis da ipak treba nesto preko, pogledaj zahteve, uporedi code, i kazi mi.
+
