@@ -43,9 +43,9 @@ def main():
     print("===============Provere poteza=====================")
 
     print(igra.proveriPotez(((1, 5), 'D')))   # True
-    print(igra.proveriPotez(((1, 6), 'D'))) #  false
+    print(igra.proveriPotez(((1, 6), 'D')))   # false
     print(igra.proveriPotez(((1, 1), 'X')))   # false
-    print(igra.proveriPotez((0, 'D')))        #  False (neispravan format poteza)
+    print(igra.proveriPotez((0, 'D')))        # False (neispravan format poteza)
 
     print("==========Prikaz test=================")
     igra.postaviPocetnoStanje(3) #n=3
@@ -61,30 +61,9 @@ def main():
     igra.prikaziStanje()
 
 
-    #Problem: crtanje dijagonalnih gumica koje prelaze u donji deo sestougla. To su ove gore (2,4)->(5,3) i (3,5)->(6,3)
-    # Uslov za prepoznavanje takve gumice je izvucen iz posmatranja svih mogucih takvih gumica, tj:
-    #     # 2,2 -> 5,1 |  2,3 -> 5,2 | 2,4 -> 5,3 | 2,5 -> 5,4
-    #     # 3,3 -> 6,1 |  3,4 -> 6,2 | 3,5 -> 6,3 | 3,6 -> 6,4
-    #     # 4,4 -> 7,1 |  4,5 -> 7,2 | 4,6 -> 7,3 | 4,7 -> 7,4
-    # zato vazi:x2==x1+3 and y2<y1 ali verovatno je dovoljno i samo x2>x1, y2<y1
-
-    #Takodje fali crtanje DD dijagonalnih tj (\) i naravno trouglica
-
-
 
 if __name__ == "__main__":  
     main()
 
 
 
-    # Za izvestaj: 
-    # Ideja je da kada se izabere Pocetna koordinata i smer, da se odmah na osnovu toga napravi gumica koju cine pocetna i krajnja koordinata
-    # Primer za to bi bio igra.proveriPotez(((1, 1), 'D')))  koji bi kreirao gumicu koja pocinje od (1,1) i zavrsava se u (1,4)
-    # Tako bi se u listu gumice dodala gumica [(1,1),(1,4)]... isto ce da vazi i za ostale smerove u zavisnosti od smera
-    # Nakon sto se bude odigrao potez tj dodale gumice, proverice se po nekoj formuli da li je formiran trougao i ako jeste cuva se u dict trouglici za tog igraca koji je odigrao potez
-    # Naravno taj igrac dobija i poen za taj trouglic i partija se nastavlja.
-    # Interfejs treba da isprati to dodavanje gumica i zauzimanje trouglica za X ili O igraca 
-    # Provera kraja igre je jednostavna. Ako je igrac premasio polovinu od maksimalnog moguceg broja trouglica, on je vec pobedio
-    # Ukoliko se desi da je zbir poena X i O jednak maksimalnom broju trouglica, partija se prekida jer je nereseno (27:27 za n=3)
-    # U svakom drugom slucaju, recimo gde je 27:26, 27:0, 11:11 blabla partija se nastavlja
-    # Broj maks mogucih trouglica za zauzimanje po partiji se racuna kao n*n*6 za n = velicina str sestougla

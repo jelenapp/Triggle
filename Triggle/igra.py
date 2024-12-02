@@ -3,7 +3,7 @@ class Igra:
         self.n = n  # str. tabele
         self.tabla = self.napraviTablu(n)  # niz sa koordinatama table
         self.gumice = []  # lista listi svih razvučenih gumica
-        self.trouglici = {'X': [], 'O': []}  # lista zauzetih trouglića, mora da razgranicimo X i O zbog stampanja kasnije
+        self.trouglici = {'X': [], 'O': []}  # lista zauzetih trouglića, moramo da razgranicimo X i O zbog stampanja kasnije
         self.rezultat = {'X': 0, 'O': 0}  # rezultat igre
         self.na_potezu = 'X'  # prvi igrač
         self.covek_na_potezu = True # defaultno prvo igra covek, false da prvi igra racunar
@@ -16,9 +16,8 @@ class Igra:
                 tabla.append((q,r))
                 
         for q in range(n + 2, 2 * n + 2):  #  (donji deo šestougla)
-            for r in range(1, 3*n - q + 3):  
+            for r in range(1, 3 * n - q + 3):
                 tabla.append((q,r))
-                
 
         return tabla
 
@@ -27,7 +26,7 @@ class Igra:
         prikaz = []
         razmak_izmedju_tacaka = 6
 
-        # Priprema horizontalnih gumica
+        # priprema horizontalnih gumica
         horizontalne_gumice = set()
         dijagonalne_gumice = []
 
@@ -73,7 +72,6 @@ class Igra:
 
             prikaz.append(''.join(razmak_red).rstrip())  # dodaj prazan red ili red s dijagonalnim gumicama
 
-        # Prikazivanje rezultata
         for red in prikaz:
             print(red)
 
@@ -121,7 +119,7 @@ class Igra:
             return False
         
         # if pozicija in self.tabla:
-        #     print(self.tabla) #ovo ti je ako ces da pogledas koordinate 
+        #     print(self.tabla) #ovo je ako ces da pogledas koordinate
 
         # provera validnosti smera
         validni_smerovi = {'D', 'DL', 'DD'}
