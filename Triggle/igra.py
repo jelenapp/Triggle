@@ -20,9 +20,23 @@ class Triggle:
         self.temp_line = None  
         self.game_over = False
         self.restart_button = None
+        
     
    
+
+
     def restart_game(self, event=None):
+
+        # plt.close(self.fig)
+        # root = self.fig.canvas.manager.window
+        # root.quit()
+        # root.destroy()
+        # show_main_menu()
+
+        # ovo gore odkomentarisi a ovo dole sve ispod zakomentarisi, 
+        # ideja je da kada se klikne na restart dugme, da se zatvori plot i da se otvori main_menu i ono ispocetka podesavas igru, ali kad je podesis i napravis plot ne moze da se klikce na njega :(
+        
+
         self.tabla = self.napraviTablu(self.n)
         self.gumice = []
         self.preseci = []
@@ -146,7 +160,6 @@ class Triggle:
         self.message_ax.axis('off')
 
     def onclick(self, event):
-
         if self.game_over:
             return
 
@@ -384,21 +397,38 @@ class Triggle:
         self.fig.canvas.draw_idle()
 
     def start_game(self):
-        self.inicijalizuj_preseke()
+        print(self.fig.canvas)
         self.fig.canvas.mpl_connect('button_press_event', self.onclick)
         self.fig.canvas.mpl_connect('motion_notify_event', self.onmove)
+        self.inicijalizuj_preseke()
         self.update_display()
         plt.show()
+
+        # print('preseci', self.preseci)
+        # print('trouglici', self.trouglici)
         
-        
-def show_choice_screen():
+
+
+def show_main_menu():
     root = tk.Tk()
-    root.title("Izbor prvog igrača")
-    root.geometry("400x300")  
+    root.title("Podešavanja igre")
+    root.geometry("400x400")
     root.configure(bg="black")
 
-    label = tk.Label(root, text="Izaberite prvog igrača:", font=("Helvetica", 16, "bold"), bg="black", fg="white")
-    label.pack(pady=30)
+    size_frame = tk.Frame(root, bg="black")
+    size_frame.pack(pady=20)
+    
+    size_label = tk.Label(size_frame, text="Veličina table (n):", font=("Helvetica", 14), bg="black", fg="white")
+    size_label.pack()
+    
+    size_var = tk.IntVar()
+    size_var.set(3)  # Set default value
+    size_entry = tk.Entry(size_frame, textvariable=size_var, font=("Helvetica", 12), width=5, justify='center')
+    size_entry.pack(pady=5)
+
+    # Player selection
+    player_label = tk.Label(root, text="Prvi igrač:", font=("Helvetica", 16, "bold"), bg="black", fg="white")
+    player_label.pack(pady=20)
   
     button_style = {
         "font": ("Helvetica", 18, "bold"),
@@ -411,23 +441,36 @@ def show_choice_screen():
         "height": 1,
     }
 
-    button_x = tk.Button(root, text="X", command=lambda: on_choice(root, 'X'), **button_style)
-    button_x.pack(side=tk.LEFT, padx=20, pady=20)
+    button_frame = tk.Frame(root, bg="black")
+    button_frame.pack(pady=20)
 
-    button_o = tk.Button(root, text="O", command=lambda: on_choice(root, 'O'), **button_style)
-    button_o.pack(side=tk.LEFT, padx=20, pady=20)
+    button_x = tk.Button(button_frame, text="X", command=lambda: on_choice(root, 'X', size_var.get()), **button_style)
+    button_x.pack(side=tk.LEFT, padx=20)
+
+    button_o = tk.Button(button_frame, text="O", command=lambda: on_choice(root, 'O', size_var.get()), **button_style)
+    button_o.pack(side=tk.LEFT, padx=20)
 
     root.mainloop()
 
-def on_choice(root, choice):
+def on_choice(root, choice, n):
+    if n < 3:
+        messagebox.showerror("Greška", "Veličina table mora biti najmanje 3")
+        return
+    elif n > 8:
+        messagebox.showerror("Greška", "Veličina table mora biti najviše 8")
+        return
+        
+    # Clean up
     root.destroy()  
-    igra = Triggle(n=3, na_potezu=choice)  
-    igra.start_game()  
+
+    
+
+    igra = Triggle(n=n, na_potezu=choice)
+    #odkomentarisi za blizu kraja igre (n=3) -> igra.gumice = [((1, 1), (4, 4)), ((1, 4), (4, 4)), ((3, 1), (3, 4)), ((1, 2), (4, 5)), ((2, 5), (5, 4)), ((4, 2), (4, 5)), ((2, 1), (5, 3)), ((2, 3), (5, 2)), ((5, 1), (5, 4)), ((3, 3), (6, 4)), ((3, 5), (6, 3)), ((1, 4), (4, 7)), ((1, 3), (4, 6)), ((3, 3), (3, 6)), ((1, 1), (1, 4)), ((1, 1), (4, 1)), ((2, 1), (2, 4)), ((1, 3), (4, 3)), ((6, 1), (6, 4)), ((3, 1), (6, 2)), ((4, 1), (7, 1)), ((4, 4), (7, 1)), ((2, 3), (5, 5)), ((3, 6), (6, 4)), ((4, 7), (7, 4)), ((1, 2), (4, 2)), ((2, 2), (2, 5)), ((5, 3), (5, 6)), ((4, 1), (4, 4))]
+    igra.start_game() 
 
 
-show_choice_screen()
-# Pokretanje igre
-igra = Triggle(n=3, na_potezu='X')
-# ovo igra.gumice = ... je stanje pri kraju partije za n=3, mozes da ga odkomentarises i da krenes igru pri kraju 
-# igra.gumice = [((1, 1), (4, 4)), ((1, 4), (4, 4)), ((3, 1), (3, 4)), ((1, 2), (4, 5)), ((2, 5), (5, 4)), ((4, 2), (4, 5)), ((2, 1), (5, 3)), ((2, 3), (5, 2)), ((5, 1), (5, 4)), ((3, 3), (6, 4)), ((3, 5), (6, 3)), ((1, 4), (4, 7)), ((1, 3), (4, 6)), ((3, 3), (3, 6)), ((1, 1), (1, 4)), ((1, 1), (4, 1)), ((2, 1), (2, 4)), ((1, 3), (4, 3)), ((6, 1), (6, 4)), ((3, 1), (6, 2)), ((4, 1), (7, 1)), ((4, 4), (7, 1)), ((2, 3), (5, 5)), ((3, 6), (6, 4)), ((4, 7), (7, 4)), ((1, 2), (4, 2)), ((2, 2), (2, 5)), ((5, 3), (5, 6)), ((4, 1), (4, 4))]
-#igra.start_game()
+show_main_menu()
+
+
+
