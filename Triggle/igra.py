@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
+import tkinter as tk
+from tkinter import messagebox
 
 class Triggle:
     def __init__(self, n, na_potezu):
@@ -19,8 +21,7 @@ class Triggle:
         self.game_over = False
         self.restart_button = None
     
-       
-
+   
     def restart_game(self, event=None):
         self.tabla = self.napraviTablu(self.n)
         self.gumice = []
@@ -388,10 +389,45 @@ class Triggle:
         self.fig.canvas.mpl_connect('motion_notify_event', self.onmove)
         self.update_display()
         plt.show()
+        
+        
+def show_choice_screen():
+    root = tk.Tk()
+    root.title("Izbor prvog igrača")
+    root.geometry("400x300")  
+    root.configure(bg="black")
+
+    label = tk.Label(root, text="Izaberite prvog igrača:", font=("Helvetica", 16, "bold"), bg="black", fg="white")
+    label.pack(pady=30)
+  
+    button_style = {
+        "font": ("Helvetica", 18, "bold"),
+        "bg": "#1E1E1E",
+        "fg": "white",
+        "activebackground": "#1E1E1E",
+        "activeforeground": "white",
+        "relief": "flat",
+        "width": 10,
+        "height": 1,
+    }
+
+    button_x = tk.Button(root, text="X", command=lambda: on_choice(root, 'X'), **button_style)
+    button_x.pack(side=tk.LEFT, padx=20, pady=20)
+
+    button_o = tk.Button(root, text="O", command=lambda: on_choice(root, 'O'), **button_style)
+    button_o.pack(side=tk.LEFT, padx=20, pady=20)
+
+    root.mainloop()
+
+def on_choice(root, choice):
+    root.destroy()  
+    igra = Triggle(n=3, na_potezu=choice)  
+    igra.start_game()  
 
 
+show_choice_screen()
 # Pokretanje igre
 igra = Triggle(n=3, na_potezu='X')
 # ovo igra.gumice = ... je stanje pri kraju partije za n=3, mozes da ga odkomentarises i da krenes igru pri kraju 
 # igra.gumice = [((1, 1), (4, 4)), ((1, 4), (4, 4)), ((3, 1), (3, 4)), ((1, 2), (4, 5)), ((2, 5), (5, 4)), ((4, 2), (4, 5)), ((2, 1), (5, 3)), ((2, 3), (5, 2)), ((5, 1), (5, 4)), ((3, 3), (6, 4)), ((3, 5), (6, 3)), ((1, 4), (4, 7)), ((1, 3), (4, 6)), ((3, 3), (3, 6)), ((1, 1), (1, 4)), ((1, 1), (4, 1)), ((2, 1), (2, 4)), ((1, 3), (4, 3)), ((6, 1), (6, 4)), ((3, 1), (6, 2)), ((4, 1), (7, 1)), ((4, 4), (7, 1)), ((2, 3), (5, 5)), ((3, 6), (6, 4)), ((4, 7), (7, 4)), ((1, 2), (4, 2)), ((2, 2), (2, 5)), ((5, 3), (5, 6)), ((4, 1), (4, 4))]
-igra.start_game()
+#igra.start_game()
