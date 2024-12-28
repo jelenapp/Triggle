@@ -20,22 +20,9 @@ class Triggle:
         self.temp_line = None  
         self.game_over = False
         self.restart_button = None
-        
-    
-   
 
 
     def restart_game(self, event=None):
-
-        # plt.close(self.fig)
-        # root = self.fig.canvas.manager.window
-        # root.quit()
-        # root.destroy()
-        # show_main_menu()
-
-        # ovo gore odkomentarisi a ovo dole sve ispod zakomentarisi, 
-        # ideja je da kada se klikne na restart dugme, da se zatvori plot i da se otvori main_menu i ono ispocetka podesavas igru, ali kad je podesis i napravis plot ne moze da se klikce na njega :(
-        
 
         self.tabla = self.napraviTablu(self.n)
         self.gumice = []
@@ -128,7 +115,7 @@ class Triggle:
         x_points = [r - (max_row - abs(q - (self.n + 1))) / 2 for q, r in self.tabla]
         y_points = [-(q - 1) for q, _ in self.tabla]
         
-        margin = 0.5  # Dodaj malo margine oko ivica
+        margin = 0.5  # dodaj malo margine oko ivica
         self.ax.set_xlim(min(x_points) - margin, max(x_points) + margin)
         self.ax.set_ylim(min(y_points) - margin, max(y_points) + margin)
 
@@ -154,7 +141,7 @@ class Triggle:
 
     def show_message(self, message):
         if not self.message_ax:
-            self.message_ax = self.fig.add_axes([0.1, 0.05, 0.8, 0.05])  # Message bar
+            self.message_ax = self.fig.add_axes([0.1, 0.05, 0.8, 0.05])  
         self.message_ax.clear()
         self.message_ax.text(0.5, 0.5, message, fontsize=12, ha='center', va='center', color='white')
         self.message_ax.axis('off')
@@ -460,13 +447,12 @@ def on_choice(root, choice, n):
         messagebox.showerror("Greška", "Veličina table mora biti najviše 8")
         return
         
-    # Clean up
     root.destroy()  
 
     
 
     igra = Triggle(n=n, na_potezu=choice)
-    #odkomentarisi za blizu kraja igre (n=3) -> igra.gumice = [((1, 1), (4, 4)), ((1, 4), (4, 4)), ((3, 1), (3, 4)), ((1, 2), (4, 5)), ((2, 5), (5, 4)), ((4, 2), (4, 5)), ((2, 1), (5, 3)), ((2, 3), (5, 2)), ((5, 1), (5, 4)), ((3, 3), (6, 4)), ((3, 5), (6, 3)), ((1, 4), (4, 7)), ((1, 3), (4, 6)), ((3, 3), (3, 6)), ((1, 1), (1, 4)), ((1, 1), (4, 1)), ((2, 1), (2, 4)), ((1, 3), (4, 3)), ((6, 1), (6, 4)), ((3, 1), (6, 2)), ((4, 1), (7, 1)), ((4, 4), (7, 1)), ((2, 3), (5, 5)), ((3, 6), (6, 4)), ((4, 7), (7, 4)), ((1, 2), (4, 2)), ((2, 2), (2, 5)), ((5, 3), (5, 6)), ((4, 1), (4, 4))]
+    #odkomentarisi za blizu kraja igre (n=3) ->igra.gumice = [((1, 1), (4, 4)), ((1, 4), (4, 4)), ((3, 1), (3, 4)), ((1, 2), (4, 5)), ((2, 5), (5, 4)), ((4, 2), (4, 5)), ((2, 1), (5, 3)), ((2, 3), (5, 2)), ((5, 1), (5, 4)), ((3, 3), (6, 4)), ((3, 5), (6, 3)), ((1, 4), (4, 7)), ((1, 3), (4, 6)), ((3, 3), (3, 6)), ((1, 1), (1, 4)), ((1, 1), (4, 1)), ((2, 1), (2, 4)), ((1, 3), (4, 3)), ((6, 1), (6, 4)), ((3, 1), (6, 2)), ((4, 1), (7, 1)), ((4, 4), (7, 1)), ((2, 3), (5, 5)), ((3, 6), (6, 4)), ((4, 7), (7, 4)), ((1, 2), (4, 2)), ((2, 2), (2, 5)), ((5, 3), (5, 6)), ((4, 1), (4, 4))]
     igra.start_game() 
 
 
